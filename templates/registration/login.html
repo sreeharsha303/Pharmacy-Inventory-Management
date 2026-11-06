@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Pharmacy Inventory</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .login-wrap { max-width: 420px; margin: 70px auto; padding: 28px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgba(0,0,0,.09); }
+        .login-wrap h1 { margin-top: 0; text-align: center; }
+        .login-wrap label { display: block; margin: 14px 0 6px; font-weight: 600; }
+        .login-wrap input { width: 100%; padding: 11px; border: 1px solid #ccd3dc; border-radius: 6px; box-sizing: border-box; }
+        .login-wrap button { width: 100%; margin-top: 20px; padding: 12px; border: 0; border-radius: 6px; background: #176b55; color: white; font-weight: 700; cursor: pointer; }
+        .login-error { color: #b42318; }
+    </style>
+</head>
+<body>
+    <main class="login-wrap">
+        <h1>💊 Pharmacy Login</h1>
+        <p>Please sign in to access the inventory dashboard.</p>
+        {% if form.errors %}<p class="login-error">Username or password is incorrect. Please try again.</p>{% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_username">Username</label>
+            {{ form.username }}
+            <label for="id_password">Password</label>
+            {{ form.password }}
+            {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+            <button type="submit">Login</button>
+        </form>
+    </main>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Delete Medicine | Pharmacy Inventory{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">CONFIRM ACTION</p><h1>Delete medicine</h1></div></section>
+<section class="panel confirm-panel">
+    <p>Are you sure you want to delete <strong>{{ medicine.name }}</strong> (batch {{ medicine.batch_number }})?</p>
+    <p class="muted">This action cannot be undone.</p>
+    <form method="post">{% csrf_token %}<div class="form-actions">
+        <a class="button secondary" href="{% url 'inventory:medicine_list' %}">Cancel</a>
+        <button class="button danger-button" type="submit">Yes, delete</button>
+    </div></form>
+</section>
+{% endblock %}

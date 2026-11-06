@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Medicines | Pharmacy Inventory{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div><p class="eyebrow">INVENTORY</p><h1>Medicines</h1><p class="muted">Search, review, and manage your stock.</p></div>
+    <a class="button" href="{% url 'inventory:medicine_create' %}">+ Add Medicine</a>
+</section>
+<form class="search-bar" method="get">
+    <input type="search" name="q" value="{{ query }}" placeholder="Search medicine, category, or batch number…">
+    <button type="submit">Search</button>
+    {% if query %}<a class="button secondary" href="{% url 'inventory:medicine_list' %}">Clear</a>{% endif %}
+</form>
+<section class="panel">
+{% if medicines %}
+<div class="table-wrap"><table>
+<thead><tr><th>Medicine</th><th>Category</th><th>Batch no.</th><th>Qty</th><th>Price</th><th>Expiry</th><th>Stock</th><th>Actions</th></tr></thead>
+<tbody>{% for medicine in medicines %}
+<tr>
+<td><strong>{{ medicine.name }}</strong><small>{{ medicine.supplier|default:"No supplier" }}</small></td>
+<td>{{ medicine.category }}</td><td>{{ medicine.batch_number }}</td><td>{{ medicine.quantity }}</td>
+<td>₹{{ medicine.price }}</td><td>{{ medicine.expiry_date|date:"d M Y" }}<small>{{ medicine.expiry_status }}</small></td>
+<td><span class="pill {% if medicine.quantity <= 10 %}low-stock{% else %}good{% endif %}">{{ medicine.stock_status }}</span></td>
+<td class="actions"><a href="{% url 'inventory:medicine_update' medicine.pk %}">Edit</a><a class="delete-link" href="{% url 'inventory:medicine_delete' medicine.pk %}">Delete</a></td>
+</tr>
+{% endfor %}</tbody></table></div>
+{% else %}<div class="empty">No medicines found. Try another search or add a medicine.</div>{% endif %}
+</section>
+{% endblock %}

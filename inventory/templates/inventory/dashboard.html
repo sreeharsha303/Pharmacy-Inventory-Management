@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | Pharmacy Inventory{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div><p class="eyebrow">OVERVIEW</p><h1>Dashboard</h1><p class="muted">Keep track of your medicine stock and expiry dates.</p></div>
+    <a class="button" href="{% url 'inventory:medicine_create' %}">+ Add Medicine</a>
+</section>
+<section class="stats">
+    <div class="stat-card"><span>Total medicines</span><strong>{{ medicine_count }}</strong></div>
+    <div class="stat-card warning"><span>Low stock (≤ 10)</span><strong>{{ low_stock_count }}</strong></div>
+    <div class="stat-card danger"><span>Expired</span><strong>{{ expired_count }}</strong></div>
+    <div class="stat-card soon"><span>Expiring in 30 days</span><strong>{{ expiring_count }}</strong></div>
+</section>
+<section class="panel">
+    <div class="panel-heading"><h2>Recently added medicines</h2><a href="{% url 'inventory:medicine_list' %}">View all →</a></div>
+    {% if recent_medicines %}
+    <div class="table-wrap"><table>
+        <thead><tr><th>Medicine</th><th>Batch</th><th>Quantity</th><th>Expiry date</th><th>Status</th></tr></thead>
+        <tbody>{% for medicine in recent_medicines %}
+        <tr><td>{{ medicine.name }}</td><td>{{ medicine.batch_number }}</td><td>{{ medicine.quantity }}</td><td>{{ medicine.expiry_date|date:"d M Y" }}</td>
+        <td><span class="pill {{ medicine.expiry_status|slugify }}">{{ medicine.expiry_status }}</span></td></tr>
+        {% endfor %}</tbody>
+    </table></div>
+    {% else %}<div class="empty">No medicines added yet. Add your first medicine to get started.</div>{% endif %}
+</section>
+{% endblock %}
